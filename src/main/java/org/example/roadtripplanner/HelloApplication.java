@@ -17,7 +17,7 @@ public class HelloApplication extends Application {
         mainStage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Start-Page.fxml"));
         AnchorPane anchorPane = fxmlLoader.load();
-        Scene scene = new Scene(anchorPane, 320, 240);
+        Scene scene = new Scene(anchorPane, 350, 270);
         stage.setTitle("Road Trip Planner");
         stage.setScene(scene);
         stage.show();

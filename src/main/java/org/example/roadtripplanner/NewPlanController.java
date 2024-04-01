@@ -62,6 +62,8 @@ public class NewPlanController {
         departureAddressCount++;
 
         if(destinationAddresses.size() > departureAddressCount) {
+            removeDestinationButton.setDisable(false);
+
             AnchorPane destination = destinationAddresses.get(departureAddressCount);
 
             destination.setVisible(true);
@@ -77,12 +79,43 @@ public class NewPlanController {
 
     @FXML
     void removeDestinationButton(ActionEvent event) {
+        if(departureAddressCount < 1) {
+            removeDestinationButton.setDisable(true);
+        } else {
+            addDestinationButton.setDisable(false);
+
+            AnchorPane destination = destinationAddresses.get(departureAddressCount);
+
+            destination.setVisible(false);
+            TextField textField = (TextField) destination.getChildren().get(1);
+            textField.setText("");
+
+            departureAddressCount--;
+
+            if(departureAddressCount == 0) {
+                removeDestinationButton.setDisable(true);
+            }
+        }
+
 
     }
 
     @FXML
     void submitButton(ActionEvent event) {
 
+    }
+
+    @FXML
+    public void initialize() {
+        destinationAddresses.add(destination1AddressComponent);
+        destinationAddresses.add(destination2AddressComponent);
+        destinationAddresses.add(destination3AddressComponent);
+        destinationAddresses.add(destination4AddressComponent);
+
+        destination1AddressComponent.managedProperty().bind(destination1AddressComponent.visibleProperty());
+        destination2AddressComponent.managedProperty().bind(destination2AddressComponent.visibleProperty());
+        destination3AddressComponent.managedProperty().bind(destination3AddressComponent.visibleProperty());
+        destination4AddressComponent.managedProperty().bind(destination4AddressComponent.visibleProperty());
     }
 
 }
