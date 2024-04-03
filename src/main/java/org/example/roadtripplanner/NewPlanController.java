@@ -2,11 +2,15 @@ package org.example.roadtripplanner;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class NewPlanController {
@@ -75,6 +79,18 @@ public class NewPlanController {
             departureAddressCount--;
         }
 
+    }
+
+    @FXML
+    void onCancelButtonClick(ActionEvent event) throws IOException {
+
+        Stage stage = HelloApplication.mainStage;
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Start-Page.fxml"));
+        AnchorPane anchorPane = fxmlLoader.load();
+        Scene scene = new Scene(anchorPane, 350, 270);
+        stage.setTitle("Road Trip Planner");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
