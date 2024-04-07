@@ -4,19 +4,24 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
+import java.util.Optional;
+import java.util.Properties;
 
 public class HelloApplication extends Application {
 
     public static Stage mainStage;
     private static Connection conn;
 
+    private static String MapsAPIKey;
+
     @Override
     public void start(Stage stage) throws IOException, SQLException {
+        boolean propFilePresent = true;
+
         conn = DriverManager.getConnection("jdbc:h2:mem:testdb", "", "");
 
         Statement stmt = conn.createStatement();
@@ -40,6 +45,22 @@ public class HelloApplication extends Application {
                 System.err.println("Issue closing the h2 database connection.");
             }
         });
+
+        Properties prop = new Properties();
+        String filename = "app.config";
+
+        try (FileInputStream fis = new FileInputStream(filename)) {
+            prop.load(fis);
+        } catch (FileNotFoundException e) {
+            propFilePresent = false;
+        }
+
+        MapsAPIKey = Optional.ofNullable(System.getenv("MapsAPIKey")).orElse("");
+
+        if(propFilePresent && prop.getProperty("MapsAPIKey") != null) {
+            MapsAPIKey = prop.getProperty("MapsAPIKey");
+        }
+
         stage.show();
     }
 
