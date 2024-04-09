@@ -61,6 +61,14 @@ public class HelloApplication extends Application {
             MapsAPIKey = prop.getProperty("MapsAPIKey");
         }
 
+        // Close the app and print a message to console if API Key is nul or blank.
+
+        if(MapsAPIKey == null || MapsAPIKey == "") {
+            System.err.println("Maps API key not present. Please create either an environment variable or put it into" +
+                    " the app.config file.");
+            System.exit(0);
+        }
+
         stage.show();
     }
 

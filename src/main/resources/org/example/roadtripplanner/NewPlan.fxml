@@ -63,6 +63,11 @@
                         <Button fx:id="removeDestinationButton" disable="true" layoutX="14.0" layoutY="1.0" mnemonicParsing="false" onAction="#removeDestinationButton" text="Remove Destination" />
                      </children>
                   </AnchorPane>
+                  <AnchorPane fx:id="warningAnchor" layoutX="10.0" layoutY="257.0" prefHeight="31.0" prefWidth="597.0">
+                     <children>
+                        <Label fx:id="warningLabel" layoutX="14.0" layoutY="5.0" text="Generic Warning label text" visible="false" />
+                     </children>
+                  </AnchorPane>
                   <AnchorPane layoutX="10.0" layoutY="225.0" prefHeight="31.0" prefWidth="597.0">
                      <children>
                         <Button fx:id="submit" defaultButton="true" layoutX="143.0" layoutY="1.0" mnemonicParsing="false" onAction="#submitButton" text="Submit" />

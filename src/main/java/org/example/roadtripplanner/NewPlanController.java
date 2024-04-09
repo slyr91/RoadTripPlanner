@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -60,6 +61,12 @@ public class NewPlanController {
 
     @FXML
     private Button submit;
+
+    @FXML
+    private AnchorPane warningAnchor;
+
+    @FXML
+    private Label warningLabel;
 
     @FXML
     void addDestinationButton(ActionEvent event) {
@@ -119,6 +126,12 @@ public class NewPlanController {
     @FXML
     void submitButton(ActionEvent event) {
 
+        // TODO run checks on required fields (Show warning label if fields are missing data or are wrong)
+
+        // TODO Add data to database
+
+        // TODO Open plan editor in a new window (alongside opening the main window again)
+
     }
 
     @FXML
@@ -132,6 +145,8 @@ public class NewPlanController {
         destination2AddressComponent.managedProperty().bind(destination2AddressComponent.visibleProperty());
         destination3AddressComponent.managedProperty().bind(destination3AddressComponent.visibleProperty());
         destination4AddressComponent.managedProperty().bind(destination4AddressComponent.visibleProperty());
+
+        warningAnchor.managedProperty().bind(warningLabel.visibleProperty());
     }
 
 }

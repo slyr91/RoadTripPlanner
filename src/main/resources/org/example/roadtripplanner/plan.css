@@ -1,0 +1,19 @@
+.submitButton {
+    -fx-background-color: #0CF;
+    -fx-text-fill: #FFF;
+}
+
+.submitButton:hover {
+    -fx-background-color: #0099cc;
+    -fx-text-fill: #FFF;
+}
+
+.deleteButton {
+    -fx-background-color: #d9534f;
+    -fx-text-fill: #FFF;
+}
+
+.deleteButton:hover {
+    -fx-background-color: #c9302c;
+    -fx-text-fill: #FFF;
+}
