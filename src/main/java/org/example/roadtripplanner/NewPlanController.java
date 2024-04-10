@@ -12,6 +12,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class NewPlanController {
@@ -126,11 +129,102 @@ public class NewPlanController {
     @FXML
     void submitButton(ActionEvent event) {
 
-        // TODO run checks on required fields (Show warning label if fields are missing data or are wrong)
+        // Validate entered data
 
-        // TODO Add data to database
+        if(planName.getText().isEmpty()) {
+            warningLabel.setText("Plan name can not be blank.");
+            warningLabel.setVisible(true);
+            return;
+        }
+
+        if(departureDate.getValue() == null) {
+            warningLabel.setText("Departure date can not be blank.");
+            warningLabel.setVisible(true);
+            return;
+        }
+
+        if(startingAddress.getText().isEmpty()) {
+            warningLabel.setText("Starting address can not be blank.");
+            warningLabel.setVisible(true);
+            return;
+        }
+
+        if(destination1Address.getText().isEmpty()) {
+            warningLabel.setText("Destination address can not be blank.");
+            warningLabel.setVisible(true);
+            return;
+        }
+
+        // Add data to the database
+
+        int id = -1;
+
+        try {
+            Statement stmt = HelloApplication.conn.createStatement();
+
+            stmt.execute("INSERT INTO plan (name, start_date, start_address) VALUES ('" + planName.getText() + "','" +
+                    departureDate.getValue() + "','" + startingAddress.getText() + "')");
+
+            ResultSet rs = stmt.executeQuery("SELECT id FROM plan WHERE name = '" + planName.getText() + "' AND " +
+                    "start_date ='" + departureDate.getValue() + "' AND start_address = '" + startingAddress.getText() +
+                    "'");
+
+            rs.next();
+
+            id = rs.getInt(1);
+
+            stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+                    destination1Address.getText() + "')");
+
+            if(!destination2Address.getText().isEmpty()) {
+                stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+                        destination2Address.getText() + "')");
+            }
+
+            if(!destination3Address.getText().isEmpty()) {
+                stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+                        destination3Address.getText() + "')");
+            }
+
+            if(!destination4Address.getText().isEmpty()) {
+                stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+                        destination4Address.getText() + "')");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Fatal error occured adding data to the database. Closing application...");
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
 
         // TODO Open plan editor in a new window (alongside opening the main window again)
+        // Reopen main stage with new plan inplace. Then open plan editor in new window.
+
+        Stage stage = HelloApplication.mainStage;
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Start-Page.fxml"));
+        AnchorPane anchorPane = null;
+        try {
+            anchorPane = fxmlLoader.load();
+        } catch (IOException e) {
+            System.err.println("Fatal error occured opening the main stage after new plan creation. Closing application...");
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+        Scene scene = new Scene(anchorPane, 350, 270);
+        stage.setTitle("Road Trip Planner");
+        stage.setScene(scene);
+        stage.show();
+
+        // Open plan editor to current plan in plan editor.
+
+        try {
+            PlanWindowHelper.openPlanEditorWindow(id);
+        } catch (IOException e) {
+            System.err.println("Fatal error occured opening the plan editor after new plan creation. Closing application...");
+            System.err.println(e.getMessage());
+            System.exit(2);
+        }
+
 
     }
 

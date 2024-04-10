@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 
-public class PlanController {
+public class PlanEditorController {
 
     @FXML
     private Button addStopButton;
@@ -71,6 +71,10 @@ public class PlanController {
 
     @FXML
     void saveButtonClicked(ActionEvent event) {
+
+    }
+
+    public void setPlan(int planId) {
 
     }
 
