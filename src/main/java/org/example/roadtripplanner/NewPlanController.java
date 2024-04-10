@@ -219,7 +219,7 @@ public class NewPlanController {
 
         try {
             PlanWindowHelper.openPlanEditorWindow(id);
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             System.err.println("Fatal error occured opening the plan editor after new plan creation. Closing application...");
             System.err.println(e.getMessage());
             System.exit(2);

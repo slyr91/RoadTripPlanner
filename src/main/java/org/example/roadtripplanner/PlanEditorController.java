@@ -8,6 +8,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+
 public class PlanEditorController {
 
     @FXML
@@ -74,8 +80,18 @@ public class PlanEditorController {
 
     }
 
-    public void setPlan(int planId) {
+    public void setPlan(int planId) throws SQLException {
+        Statement stmt = HelloApplication.conn.createStatement();
 
+        ResultSet rs = stmt.executeQuery("SELECT a.*, b.* FROM plan AS a JOIN destinations ON a.id = b.plan_id " +
+                "WHERE a.id = " + planId + " ORDER BY b.id");
+
+        rs.next();
+
+        String planName = rs.getString("a.name");
+        Date departureDate = rs.getDate("a.start_date");
+        String startingAddress = rs.getString("a.start_address");
+        String destination1Address = rs.getString("b.address");
     }
 
 }
