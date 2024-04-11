@@ -206,7 +206,7 @@ public class NewPlanController {
         try {
             anchorPane = fxmlLoader.load();
         } catch (IOException e) {
-            System.err.println("Fatal error occured opening the main stage after new plan creation. Closing application...");
+            System.err.println("Fatal error occurred opening the main stage after new plan creation. Closing application...");
             System.err.println(e.getMessage());
             System.exit(1);
         }
@@ -220,7 +220,7 @@ public class NewPlanController {
         try {
             PlanWindowHelper.openPlanEditorWindow(id);
         } catch (IOException | SQLException e) {
-            System.err.println("Fatal error occured opening the plan editor after new plan creation. Closing application...");
+            System.err.println("Fatal error occurred opening the plan editor after new plan creation. Closing application...");
             System.err.println(e.getMessage());
             System.exit(2);
         }
