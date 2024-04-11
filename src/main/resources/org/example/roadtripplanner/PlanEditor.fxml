@@ -13,9 +13,9 @@
       <Label layoutX="14.0" layoutY="14.0" text="Plan Name:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
       <Label layoutX="14.0" layoutY="71.0" text="Starting Address:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="71.0" />
       <Label layoutX="14.0" layoutY="95.66666666666667" text="Destination Address:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="95.66666666666667" />
-      <Label layoutX="14.0" layoutY="122.33333333333333" text="Destination 2 Address:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="122.33333333333333" />
-      <Label layoutX="15.333333333333334" layoutY="149.66666666666666" text="Destination 3 Address:" AnchorPane.leftAnchor="15.333333333333334" AnchorPane.topAnchor="149.66666666666666" />
-      <Label layoutX="15.333333333333334" layoutY="175.0" text="Destination 4 Address:" AnchorPane.leftAnchor="15.333333333333334" AnchorPane.topAnchor="175.0" />
+      <Label fx:id="destination2AddressLabel" layoutX="14.0" layoutY="122.33333333333333" text="Destination 2 Address:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="122.33333333333333" />
+      <Label fx:id="destination3AddressLabel" layoutX="15.333333333333334" layoutY="149.66666666666666" text="Destination 3 Address:" AnchorPane.leftAnchor="15.333333333333334" AnchorPane.topAnchor="149.66666666666666" />
+      <Label fx:id="destination4AddressLabel" layoutX="15.333333333333334" layoutY="175.0" text="Destination 4 Address:" AnchorPane.leftAnchor="15.333333333333334" AnchorPane.topAnchor="175.0" />
       <WebView fx:id="mapArea" focusTraversable="false" layoutX="390.0" layoutY="18.0" prefHeight="200.0" prefWidth="400.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="18.0" />
       <Label fx:id="startingAddressText" layoutX="149.0" layoutY="71.0" text="Label" />
       <VBox fx:id="listOfStopsVbox" layoutX="19.0" layoutY="386.0" prefHeight="263.0" prefWidth="761.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="20.0" />
@@ -24,9 +24,9 @@
       <Button fx:id="deleteButton" layoutX="703.0" layoutY="288.0" mnemonicParsing="false" onAction="#deleteButtonClicked" styleClass="deleteButton" stylesheets="@plan.css" text="Delete Plan" AnchorPane.bottomAnchor="286.6666666666667" AnchorPane.rightAnchor="20.33333333333333" />
       <TextField fx:id="planNameTextField" layoutX="149.0" layoutY="10.0" prefHeight="25.0" prefWidth="211.0" />
       <Label fx:id="destinationAddressText" layoutX="149.0" layoutY="95.66666666666667" text="Label" />
-      <Label fx:id="destination2AddressText" layoutX="149.0" layoutY="122.33333333333333" text="Label" />
-      <Label fx:id="destination3AddressText" layoutX="149.0" layoutY="149.66666666666666" text="Label" />
-      <Label fx:id="destination4AddressText" layoutX="149.0" layoutY="175.0" text="Label" />
+      <Label fx:id="destination2AddressText" layoutX="149.0" layoutY="122.33333333333333" text="Label" visible="false" />
+      <Label fx:id="destination3AddressText" layoutX="149.0" layoutY="149.66666666666666" text="Label" visible="false" />
+      <Label fx:id="destination4AddressText" layoutX="149.0" layoutY="175.0" text="Label" visible="false" />
       <Button fx:id="printItineraryButton" layoutX="214.0" layoutY="288.0" mnemonicParsing="false" onAction="#printItineraryButtonClicked" text="Print Itinerary" AnchorPane.bottomAnchor="286.6666666666667" AnchorPane.leftAnchor="214.0" />
       <Line endX="99.99998474121094" endY="-7.66668701171875" layoutX="100.0" layoutY="317.0" startX="99.99998474121094" startY="-26.333343505859375" stroke="#515050" AnchorPane.bottomAnchor="290.16668701171875" AnchorPane.leftAnchor="199.49998474121094" />
       <Button fx:id="saveButton" layoutX="328.0" layoutY="287.0" mnemonicParsing="false" onAction="#saveButtonClicked" styleClass="submitButton" stylesheets="@plan.css" text="Save Plan" AnchorPane.bottomAnchor="287.6666666666667" AnchorPane.leftAnchor="328.0" />

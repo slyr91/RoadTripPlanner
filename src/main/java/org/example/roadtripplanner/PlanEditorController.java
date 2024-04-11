@@ -27,10 +27,19 @@ public class PlanEditorController {
     private Label departureDateText;
 
     @FXML
+    private Label destination2AddressLabel;
+
+    @FXML
     private Label destination2AddressText;
 
     @FXML
+    private Label destination3AddressLabel;
+
+    @FXML
     private Label destination3AddressText;
+
+    @FXML
+    private Label destination4AddressLabel;
 
     @FXML
     private Label destination4AddressText;
@@ -109,12 +118,19 @@ public class PlanEditorController {
         int index = 0;
         do {
             destinationLabels.get(index).setText(rs.getString("address"));
+            destinationLabels.get(index).setVisible(true);
         } while(rs.next());
-
-        // TODO Remove unneeded destination addresses.
 
         // TODO add entries for stops if they exist to the listOfStopsVbox container
 
+    }
+
+    public void initialize() {
+        destination2AddressLabel.visibleProperty().bind(destination2AddressText.visibleProperty());
+        destination3AddressLabel.visibleProperty().bind(destination3AddressText.visibleProperty());
+        destination4AddressLabel.visibleProperty().bind(destination4AddressText.visibleProperty());
+
+        // TODO Use Maps API to get the route overview and place it in the webview window.
     }
 
 }
