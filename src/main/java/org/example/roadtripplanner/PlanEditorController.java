@@ -7,13 +7,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import static org.example.roadtripplanner.HelloApplication.client;
 
 public class PlanEditorController {
 
@@ -93,7 +100,7 @@ public class PlanEditorController {
 
     }
 
-    public void setPlan(int planId) throws SQLException {
+    public void setPlan(int planId) throws SQLException, IOException {
         Statement stmt = HelloApplication.conn.createStatement();
 
         ResultSet rs = stmt.executeQuery("SELECT a.*, b.address FROM plan AS a JOIN destinations AS b ON a.id = b.plan_id " +
@@ -121,6 +128,71 @@ public class PlanEditorController {
             destinationLabels.get(index).setVisible(true);
         } while(rs.next());
 
+        // Setup the static map in the WebView container
+        MediaType JSON = MediaType.get("application/json");
+
+        String json = "{\n" +
+                "  \"origin\":{\n" +
+                "    \"location\":{\n" +
+                "      \"latLng\":{\n" +
+                "        \"latitude\": 37.419734,\n" +
+                "        \"longitude\": -122.0827784\n" +
+                "      }\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"destination\":{\n" +
+                "    \"location\":{\n" +
+                "      \"latLng\":{\n" +
+                "        \"latitude\": 37.417670,\n" +
+                "        \"longitude\": -122.079595\n" +
+                "      }\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"travelMode\": \"DRIVE\",\n" +
+                "  \"routingPreference\": \"TRAFFIC_AWARE\",\n" +
+                "  \"departureTime\": \"2024-10-15T15:01:23.045123456Z\",\n" +
+                "  \"computeAlternativeRoutes\": false,\n" +
+                "  \"routeModifiers\": {\n" +
+                "    \"avoidTolls\": false,\n" +
+                "    \"avoidHighways\": false,\n" +
+                "    \"avoidFerries\": false\n" +
+                "  },\n" +
+                "  \"languageCode\": \"en-US\",\n" +
+                "  \"units\": \"IMPERIAL\"\n" +
+                "}";
+
+        // TODO Use Maps API to get the route overview and place it in the webview window.
+
+        RequestBody body = RequestBody.create(json, JSON);
+
+        Request request = new Request.Builder()
+                .url("https://routes.googleapis.com/directions/v2:computeRoutes")
+                .post(body)
+                .addHeader("X-Goog-Api-Key", HelloApplication.MapsAPIKey)
+                .addHeader("X-Goog-FieldMask", "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline")
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
+            System.out.println(response.body().string());
+            /*
+            Outputs the below JSON
+
+            {
+                "routes": [
+                    {
+                        "distanceMeters": 773,
+                        "duration": "162s",
+                        "polyline": {
+                            "encodedPolyline": "ipkcFjichVzQ@d@gU{E?"
+                        }
+                    }
+                ]
+            }
+             */
+        }
+
         // TODO add entries for stops if they exist to the listOfStopsVbox container
 
     }
@@ -129,8 +201,6 @@ public class PlanEditorController {
         destination2AddressLabel.visibleProperty().bind(destination2AddressText.visibleProperty());
         destination3AddressLabel.visibleProperty().bind(destination3AddressText.visibleProperty());
         destination4AddressLabel.visibleProperty().bind(destination4AddressText.visibleProperty());
-
-        // TODO Use Maps API to get the route overview and place it in the webview window.
     }
 
 }

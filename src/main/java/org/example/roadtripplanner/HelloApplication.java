@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import okhttp3.OkHttpClient;
 
 import java.io.*;
 import java.sql.*;
@@ -16,13 +17,17 @@ public class HelloApplication extends Application {
     public static Stage mainStage;
     public static Connection conn;
 
-    private static String MapsAPIKey;
+    public static String MapsAPIKey;
+
+    public static OkHttpClient client;
 
     @Override
     public void start(Stage stage) throws IOException, SQLException {
         boolean propFilePresent = true;
 
         conn = DriverManager.getConnection("jdbc:h2:mem:testdb", "", "");
+
+        client = new OkHttpClient();
 
         Statement stmt = conn.createStatement();
 
