@@ -133,27 +133,20 @@ public class PlanEditorController {
 
         String json = "{\n" +
                 "  \"origin\":{\n" +
-                "    \"location\":{\n" +
-                "      \"latLng\":{\n" +
-                "        \"latitude\": 37.419734,\n" +
-                "        \"longitude\": -122.0827784\n" +
-                "      }\n" +
-                "    }\n" +
+                "      \"address\": \"9521 Fullbright Ave, Chatsworth, CA, 91311\"\n" +
                 "  },\n" +
                 "  \"destination\":{\n" +
-                "    \"location\":{\n" +
-                "      \"latLng\":{\n" +
-                "        \"latitude\": 37.417670,\n" +
-                "        \"longitude\": -122.079595\n" +
-                "      }\n" +
-                "    }\n" +
+                "      \"address\": \"10201 Reseda Blvd #100, Northridge, CA 91324\"\n" +
                 "  },\n" +
+                "   \"intermediates\": [{\n" +
+                "        \"address\": \"9400 Shirley Ave, Northridge, CA 91324\"\n" +
+                "    }],\n" +
                 "  \"travelMode\": \"DRIVE\",\n" +
-                "  \"routingPreference\": \"TRAFFIC_AWARE\",\n" +
-                "  \"departureTime\": \"2024-10-15T15:01:23.045123456Z\",\n" +
+//                "  \"routingPreference\": \"TRAFFIC_AWARE\",\n" +
+//                "  \"departureTime\": \"2024-10-15T15:01:23.045123456Z\",\n" +
                 "  \"computeAlternativeRoutes\": false,\n" +
                 "  \"routeModifiers\": {\n" +
-                "    \"avoidTolls\": false,\n" +
+                "    \"avoidTolls\": true,\n" +
                 "    \"avoidHighways\": false,\n" +
                 "    \"avoidFerries\": false\n" +
                 "  },\n" +
