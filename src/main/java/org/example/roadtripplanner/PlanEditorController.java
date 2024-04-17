@@ -1,5 +1,6 @@
 package org.example.roadtripplanner;
 
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +12,10 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.example.roadtripplanner.jsons.Location;
+import org.example.roadtripplanner.jsons.RoutesRequest;
+import org.example.roadtripplanner.jsons.RoutesResponse;
+import org.example.roadtripplanner.jsons.RoutesResponseArray;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -131,32 +136,21 @@ public class PlanEditorController {
         // Setup the static map in the WebView container
         MediaType JSON = MediaType.get("application/json");
 
-        String json = "{\n" +
-                "  \"origin\":{\n" +
-                "      \"address\": \"9521 Fullbright Ave, Chatsworth, CA, 91311\"\n" +
-                "  },\n" +
-                "  \"destination\":{\n" +
-                "      \"address\": \"10201 Reseda Blvd #100, Northridge, CA 91324\"\n" +
-                "  },\n" +
-                "   \"intermediates\": [{\n" +
-                "        \"address\": \"9400 Shirley Ave, Northridge, CA 91324\"\n" +
-                "    }],\n" +
-                "  \"travelMode\": \"DRIVE\",\n" +
-//                "  \"routingPreference\": \"TRAFFIC_AWARE\",\n" +
-//                "  \"departureTime\": \"2024-10-15T15:01:23.045123456Z\",\n" +
-                "  \"computeAlternativeRoutes\": false,\n" +
-                "  \"routeModifiers\": {\n" +
-                "    \"avoidTolls\": true,\n" +
-                "    \"avoidHighways\": false,\n" +
-                "    \"avoidFerries\": false\n" +
-                "  },\n" +
-                "  \"languageCode\": \"en-US\",\n" +
-                "  \"units\": \"IMPERIAL\"\n" +
-                "}";
+        Gson gson = new Gson();
+
+        RoutesRequest route = new RoutesRequest();
+        Location origin = new Location();
+        Location destination = new Location();
+
+        origin.setAddress("9521 Fullbright Ave, Chatsworth, CA, 91311");
+        destination.setAddress("10201 Reseda Blvd #100, Northridge, CA 91324");
+
+        route.setOrigin(origin);
+        route.setDestination(destination);
 
         // TODO Use Maps API to get the route overview and place it in the webview window.
 
-        RequestBody body = RequestBody.create(json, JSON);
+        RequestBody body = RequestBody.create(gson.toJson(route), JSON);
 
         Request request = new Request.Builder()
                 .url("https://routes.googleapis.com/directions/v2:computeRoutes")
@@ -168,22 +162,8 @@ public class PlanEditorController {
 
         try (Response response = client.newCall(request).execute()) {
             assert response.body() != null;
-            System.out.println(response.body().string());
-            /*
-            Outputs the below JSON
-
-            {
-                "routes": [
-                    {
-                        "distanceMeters": 773,
-                        "duration": "162s",
-                        "polyline": {
-                            "encodedPolyline": "ipkcFjichVzQ@d@gU{E?"
-                        }
-                    }
-                ]
-            }
-             */
+            RoutesResponseArray routesResponseArray = gson.fromJson(response.body().string(), RoutesResponseArray.class);
+            System.out.println(routesResponseArray.getRoutes().get(0));
         }
 
         // TODO add entries for stops if they exist to the listOfStopsVbox container

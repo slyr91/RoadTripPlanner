@@ -47,6 +47,7 @@ dependencies {
   implementation("com.google.code.gson:gson:${gsonVersion}")
   implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
   implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.23")
+
 }
 
 test {
@@ -62,4 +63,32 @@ jlink {
 
 jlinkZip {
   group = 'distribution'
+}
+
+//------------------------------------------------------------------------------
+// Configure "dev" sourceset for running Scratch class
+//------------------------------------------------------------------------------
+
+// Create new dev sourceset with a compile and runtime classpath dependency
+// on the main sourceset. This allows us to use the classes we create in
+// the main sourceset in our dev sourceset.
+// The directories src/dev/java and src/dev/resources are recognized
+// for this sourceset.
+sourceSets.create("dev") {
+  compileClasspath += sourceSets.main.output
+  runtimeClasspath += sourceSets.main.output
+}
+
+// Create a new task "runDev" that will run the compiled Scratch.java file
+// in the root of src/dev/java. The classpath will contain all dependencies
+// from the devImplementation and devRuntimeOnly configurations.
+tasks.register("runDev", JavaExec) {
+  description = "Run Scratch file."
+  group = "dev"
+  classpath = sourceSets.dev.runtimeClasspath
+  mainClass = "Scratch"
+}
+
+dependencies {
+  devImplementation("com.google.code.gson:gson:${gsonVersion}")
 }
