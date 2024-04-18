@@ -180,12 +180,24 @@ public class PlanEditorController {
             System.out.println(routesResponseArray.getRoutes().get(0));
 
             mapArea.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?size=400x200&maptype=roadmap" +
+                    "&markers=color:blue|size:small|label:A|" + convertToURLString(startingAddress) +
                     "&path=enc:" + routesResponseArray.getRoutes().get(0).getPolyline().getEncodedPolyline() + "&key=" +
                     HelloApplication.MapsAPIKey);
         }
 
         // TODO add entries for stops if they exist to the listOfStopsVbox container
 
+    }
+
+    private String convertToURLString(String address) {
+        String[] addressParts = address.split(",", 2);
+
+        if(addressParts.length < 2) {
+            return address.replaceAll(" ", "+");
+        } else {
+            return addressParts[0].replaceAll(" ", "+") + "," +
+                    addressParts[1].replaceAll(" ", "");
+        }
     }
 
     public void initialize() {
