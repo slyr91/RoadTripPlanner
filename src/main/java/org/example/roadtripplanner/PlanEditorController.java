@@ -131,7 +131,9 @@ public class PlanEditorController {
         do {
             destinationLabels.get(index).setText(rs.getString("address"));
             destinationLabels.get(index).setVisible(true);
+            index++;
         } while(rs.next());
+
 
         // Setup the static map in the WebView container
         MediaType JSON = MediaType.get("application/json");
@@ -142,8 +144,20 @@ public class PlanEditorController {
         Location origin = new Location();
         Location destination = new Location();
 
-        origin.setAddress("9521 Fullbright Ave, Chatsworth, CA, 91311");
-        destination.setAddress("10201 Reseda Blvd #100, Northridge, CA 91324");
+        origin.setAddress(startingAddress);
+
+        for(int i = 0; i < index; i++) {
+            if(i + 1 == index) {
+                destination.setAddress(destinationLabels.get(i).getText());
+            } else {
+                if(route.getIntermediates() == null) {
+                    route.setIntermediates(new ArrayList<>());
+                }
+                Location inter = new Location();
+                inter.setAddress(destinationLabels.get(i).getText());
+                route.getIntermediates().add(inter);
+            }
+        }
 
         route.setOrigin(origin);
         route.setDestination(destination);
