@@ -178,6 +178,10 @@ public class PlanEditorController {
             assert response.body() != null;
             RoutesResponseArray routesResponseArray = gson.fromJson(response.body().string(), RoutesResponseArray.class);
             System.out.println(routesResponseArray.getRoutes().get(0));
+
+            mapArea.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?size=400x200&maptype=roadmap" +
+                    "&path=enc:" + routesResponseArray.getRoutes().get(0).getPolyline().getEncodedPolyline() + "&key=" +
+                    HelloApplication.MapsAPIKey);
         }
 
         // TODO add entries for stops if they exist to the listOfStopsVbox container
