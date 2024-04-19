@@ -35,7 +35,7 @@ public class HelloApplication extends Application {
                 "start_date DATE, start_address VARCHAR(255))");
 
         stmt.execute("CREATE TABLE IF NOT EXISTS destinations (id INT PRIMARY KEY auto_increment, plan_id INT, " +
-                "address VARCHAR(255), foreign key(plan_id) references plan(id))");
+                "stop_order INT, address VARCHAR(255), foreign key(plan_id) references plan(id))");
 
         mainStage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Start-Page.fxml"));

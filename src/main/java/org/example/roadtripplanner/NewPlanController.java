@@ -173,21 +173,21 @@ public class NewPlanController {
 
             id = rs.getInt(1);
 
-            stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+            stmt.execute("INSERT INTO destinations (plan_id, stop_order, address) VALUES (" + id + ",1,'" +
                     destination1Address.getText() + "')");
 
             if(!destination2Address.getText().isEmpty()) {
-                stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+                stmt.execute("INSERT INTO destinations (plan_id, stop_order, address) VALUES (" + id + ",2,'" +
                         destination2Address.getText() + "')");
             }
 
             if(!destination3Address.getText().isEmpty()) {
-                stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+                stmt.execute("INSERT INTO destinations (plan_id, stop_order, address) VALUES (" + id + ",3,'" +
                         destination3Address.getText() + "')");
             }
 
             if(!destination4Address.getText().isEmpty()) {
-                stmt.execute("INSERT INTO destinations (plan_id, address) VALUES (" + id + ",'" +
+                stmt.execute("INSERT INTO destinations (plan_id, stop_order, address) VALUES (" + id + ",4,'" +
                         destination4Address.getText() + "')");
             }
 

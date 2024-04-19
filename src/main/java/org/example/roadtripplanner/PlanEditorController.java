@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static org.example.roadtripplanner.HelloApplication.client;
 
@@ -80,6 +81,9 @@ public class PlanEditorController {
     @FXML
     private Label startingAddressText;
 
+    private int planId;
+    private ArrayList<Label> addressLabels;
+
     @FXML
     void addStopButtonClicked(ActionEvent event) {
 
@@ -101,11 +105,28 @@ public class PlanEditorController {
     }
 
     @FXML
-    void saveButtonClicked(ActionEvent event) {
+    void saveButtonClicked(ActionEvent event) throws SQLException {
+        Statement stmt = HelloApplication.conn.createStatement();
 
+        stmt.execute("UPDATE plan SET name = '" + planNameTextField.getText() + "', start_date = '" +
+                departureDateText.getText() + "', start_address = '" + startingAddressText.getText() + "' WHERE " +
+                "id = " + planId);
+
+//        for(int i = 0; i < addressLabels.size(); i++) {
+//            String currentAddress = addressLabels.get(i).getText();
+//
+//            if(currentAddress.isEmpty()) {
+//                stmt.execute("DELETE destinations WHERE plan_id = " + planId + " AND stop_order = " + (i + 1));
+//            } else {
+//                stmt.execute("UPDATE destinations SET address = '" + currentAddress +
+//                        "' WHERE plan_id = " + planId + " AND stop_order = " + (i + 1));
+//            }
+//        }
     }
 
     public void setPlan(int planId) throws SQLException, IOException {
+        this.planId = planId;
+
         Statement stmt = HelloApplication.conn.createStatement();
 
         ResultSet rs = stmt.executeQuery("SELECT a.*, b.address FROM plan AS a JOIN destinations AS b ON a.id = b.plan_id " +
@@ -121,16 +142,17 @@ public class PlanEditorController {
         departureDateText.setText(departureDate.toString());
         startingAddressText.setText(startingAddress);
 
-        ArrayList<Label> destinationLabels = new ArrayList<>();
-        destinationLabels.add(destinationAddressText);
-        destinationLabels.add(destination2AddressText);
-        destinationLabels.add(destination3AddressText);
-        destinationLabels.add(destination4AddressText);
+        addressLabels = new ArrayList<>();
+        addressLabels.add(startingAddressText);
+        addressLabels.add(destinationAddressText);
+        addressLabels.add(destination2AddressText);
+        addressLabels.add(destination3AddressText);
+        addressLabels.add(destination4AddressText);
 
-        int index = 0;
+        int index = 1;
         do {
-            destinationLabels.get(index).setText(rs.getString("address"));
-            destinationLabels.get(index).setVisible(true);
+            addressLabels.get(index).setText(rs.getString("address"));
+            addressLabels.get(index).setVisible(true);
             index++;
         } while(rs.next());
 
@@ -146,23 +168,21 @@ public class PlanEditorController {
 
         origin.setAddress(startingAddress);
 
-        for(int i = 0; i < index; i++) {
+        for(int i = 1; i < index; i++) {
             if(i + 1 == index) {
-                destination.setAddress(destinationLabels.get(i).getText());
+                destination.setAddress(addressLabels.get(i).getText());
             } else {
                 if(route.getIntermediates() == null) {
                     route.setIntermediates(new ArrayList<>());
                 }
                 Location inter = new Location();
-                inter.setAddress(destinationLabels.get(i).getText());
+                inter.setAddress(addressLabels.get(i).getText());
                 route.getIntermediates().add(inter);
             }
         }
 
         route.setOrigin(origin);
         route.setDestination(destination);
-
-        // TODO Use Maps API to get the route overview and place it in the webview window.
 
         RequestBody body = RequestBody.create(gson.toJson(route), JSON);
 
@@ -179,10 +199,24 @@ public class PlanEditorController {
             RoutesResponseArray routesResponseArray = gson.fromJson(response.body().string(), RoutesResponseArray.class);
             System.out.println(routesResponseArray.getRoutes().get(0));
 
-            mapArea.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?size=400x200&maptype=roadmap" +
-                    "&markers=color:blue|size:small|label:A|" + convertToURLString(startingAddress) +
-                    "&path=enc:" + routesResponseArray.getRoutes().get(0).getPolyline().getEncodedPolyline() + "&key=" +
-                    HelloApplication.MapsAPIKey);
+            // Build the static map URL starting from the initial URL and required parameters.
+            StringBuilder staticMapURL = new StringBuilder("https://maps.googleapis.com/maps/api/staticmap?" +
+                    "size=400x200&maptype=roadmap");
+
+            // Add each address in order
+            for(int i = 0; i < index; i++) {
+                staticMapURL.append("&markers=color:blue|label:").append(i + 1).append("|")
+                        .append(convertToURLString(addressLabels.get(i).getText()));
+            }
+
+            // Add overall route polyline.
+            staticMapURL.append("&path=enc:")
+                    .append(routesResponseArray.getRoutes().get(0).getPolyline().getEncodedPolyline());
+
+            // Add Maps API Key
+            staticMapURL.append("&key=").append(HelloApplication.MapsAPIKey);
+
+            mapArea.getEngine().load(staticMapURL.toString());
         }
 
         // TODO add entries for stops if they exist to the listOfStopsVbox container
