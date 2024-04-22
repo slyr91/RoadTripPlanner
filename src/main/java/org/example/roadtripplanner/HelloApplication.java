@@ -3,9 +3,12 @@ package org.example.roadtripplanner;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import okhttp3.OkHttpClient;
+import org.example.roadtripplanner.components.SavedPlanComponent;
 
 import java.io.*;
 import java.sql.*;
@@ -40,7 +43,7 @@ public class HelloApplication extends Application {
         mainStage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Start-Page.fxml"));
         AnchorPane anchorPane = fxmlLoader.load();
-        Scene scene = new Scene(anchorPane, 350, 270);
+        Scene scene = new Scene(anchorPane, 470, 297);
         stage.setTitle("Road Trip Planner");
         stage.setScene(scene);
         stage.setOnCloseRequest((event) -> {

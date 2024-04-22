@@ -197,9 +197,6 @@ public class NewPlanController {
             System.exit(1);
         }
 
-        // TODO Open plan editor in a new window (alongside opening the main window again)
-        // Reopen main stage with new plan inplace. Then open plan editor in new window.
-
         Stage stage = HelloApplication.mainStage;
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Start-Page.fxml"));
         AnchorPane anchorPane = null;
@@ -210,7 +207,7 @@ public class NewPlanController {
             System.err.println(e.getMessage());
             System.exit(1);
         }
-        Scene scene = new Scene(anchorPane, 350, 270);
+        Scene scene = new Scene(anchorPane, 470, 297);
         stage.setTitle("Road Trip Planner");
         stage.setScene(scene);
         stage.show();
