@@ -1,6 +1,12 @@
 package org.example.roadtripplanner;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.LatLng;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,13 +14,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.example.roadtripplanner.jsons.Location;
 import org.example.roadtripplanner.jsons.RoutesRequest;
-import org.example.roadtripplanner.jsons.RoutesResponse;
 import org.example.roadtripplanner.jsons.RoutesResponseArray;
 
 import java.io.IOException;
@@ -22,9 +28,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import static org.example.roadtripplanner.HelloApplication.client;
 
@@ -86,16 +91,20 @@ public class PlanEditorController {
 
     @FXML
     void addStopButtonClicked(ActionEvent event) {
+        // TODO convert these test lines to the actual implementation
+        try (GeoApiContext context = new GeoApiContext.Builder().apiKey(HelloApplication.MapsAPIKey).build()) {
+            DirectionsResult result = DirectionsApi.getDirections(context, startingAddressText.getText(),
+                    destinationAddressText.getText()).await();
 
-    }
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    @FXML
-    void deleteButtonClicked(ActionEvent event) {
+            List<LatLng> waypoints = result.routes[0].overviewPolyline.decodePath();
+            System.out.println(waypoints.size());
+//            System.out.println(gson.toJson(result.routes[0].legs[0]));
 
-    }
-
-    @FXML
-    void printItineraryButtonClicked(ActionEvent event) {
+        } catch (IOException | InterruptedException | ApiException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -112,6 +121,9 @@ public class PlanEditorController {
                 departureDateText.getText() + "', start_address = '" + startingAddressText.getText() + "' WHERE " +
                 "id = " + planId);
 
+        Stage stage = (Stage) deleteButton.getScene().getWindow();
+        stage.close();
+
 //        for(int i = 0; i < addressLabels.size(); i++) {
 //            String currentAddress = addressLabels.get(i).getText();
 //
@@ -122,6 +134,23 @@ public class PlanEditorController {
 //                        "' WHERE plan_id = " + planId + " AND stop_order = " + (i + 1));
 //            }
 //        }
+    }
+
+    @FXML
+    void deleteButtonClicked(ActionEvent event) throws SQLException {
+        Statement stmt = HelloApplication.conn.createStatement();
+
+        // TODO add cascade deletion of destinations table.
+        stmt.execute("DELETE plan WHERE id = " + planId);
+        stmt.execute("DELETE destination WHERE plan_id = " + planId);
+
+        Stage stage = (Stage) deleteButton.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    void printItineraryButtonClicked(ActionEvent event) {
+
     }
 
     public void setPlan(int planId) throws SQLException, IOException {
