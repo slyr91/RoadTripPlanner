@@ -12,6 +12,7 @@ module org.example.roadtripplanner {
     requires google.maps.services;
     requires org.slf4j;
     requires org.slf4j.simple;
+    requires java.desktop;
 
 
     opens org.example.roadtripplanner to javafx.fxml;

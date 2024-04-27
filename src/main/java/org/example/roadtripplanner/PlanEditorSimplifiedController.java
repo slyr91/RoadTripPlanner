@@ -1,12 +1,10 @@
 package org.example.roadtripplanner;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.LatLng;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,14 +32,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.example.roadtripplanner.HelloApplication.client;
 
-public class PlanEditorController {
-
-    @FXML
-    private Button addStopButton;
+public class PlanEditorSimplifiedController {
 
     @FXML
     private Button deleteButton;
@@ -71,9 +65,6 @@ public class PlanEditorController {
     private Label destinationAddressText;
 
     @FXML
-    private VBox listOfStopsVbox;
-
-    @FXML
     private WebView mapArea;
 
     @FXML
@@ -81,9 +72,6 @@ public class PlanEditorController {
 
     @FXML
     private Button printItineraryButton;
-
-    @FXML
-    private Button removeStopButton;
 
     @FXML
     private Button saveButton;
@@ -94,25 +82,6 @@ public class PlanEditorController {
     private int planId;
     private ArrayList<Label> addressLabels;
     private int numDestinations;
-
-    @FXML
-    void addStopButtonClicked(ActionEvent event) throws IOException {
-        // TODO convert these test lines to the actual implementation
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(PlanEditorController.class.getResource("AddStop.fxml"));
-        Scene scene = new Scene(loader.load());
-        stage.setTitle("Add a Stop");
-        stage.setScene(scene);
-        AddStopController addStopController = loader.getController();
-        addStopController.setOptions(listOfStopsVbox, addressLabels);
-        stage.show();
-
-    }
-
-    @FXML
-    void removeStopButtonClicked(ActionEvent event) {
-
-    }
 
     @FXML
     void saveButtonClicked(ActionEvent event) throws SQLException {
@@ -305,9 +274,6 @@ public class PlanEditorController {
         destination2AddressLabel.visibleProperty().bind(destination2AddressText.visibleProperty());
         destination3AddressLabel.visibleProperty().bind(destination3AddressText.visibleProperty());
         destination4AddressLabel.visibleProperty().bind(destination4AddressText.visibleProperty());
-
-        addStopButton.setVisible(false);
-        removeStopButton.setVisible(false);
     }
 
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.web.WebView?>
+
+<AnchorPane minHeight="264.0" minWidth="800.0" prefHeight="264.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.roadtripplanner.PlanEditorSimplifiedController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Plan Name:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+      <Label layoutX="14.0" layoutY="71.0" text="Starting Address (1):" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="71.0" />
+      <Label layoutX="14.0" layoutY="95.66666666666667" text="Destination Address (2):" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="95.66666666666667" />
+      <Label fx:id="destination2AddressLabel" layoutX="14.0" layoutY="122.33333333333333" text="Destination Address (3):" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="122.33333333333333" />
+      <Label fx:id="destination3AddressLabel" layoutX="15.333333333333334" layoutY="149.66666666666666" text="Destination Address (4):" AnchorPane.leftAnchor="15.333333333333334" AnchorPane.topAnchor="149.66666666666666" />
+      <Label fx:id="destination4AddressLabel" layoutX="15.333333333333334" layoutY="175.0" text="Destination Address (5):" AnchorPane.leftAnchor="15.333333333333334" AnchorPane.topAnchor="175.0" />
+      <WebView fx:id="mapArea" focusTraversable="false" layoutX="390.0" layoutY="18.0" prefHeight="200.0" prefWidth="400.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="18.0" />
+      <Label fx:id="startingAddressText" layoutX="149.0" layoutY="71.0" text="Label" />
+      <Button fx:id="deleteButton" layoutX="675.6666666666667" layoutY="230.0" mnemonicParsing="false" onAction="#deleteButtonClicked" styleClass="deleteButton" stylesheets="@plan.css" text="Delete Plan" AnchorPane.rightAnchor="47.66666666666663" />
+      <TextField fx:id="planNameTextField" layoutX="149.0" layoutY="10.0" prefHeight="25.0" prefWidth="211.0" />
+      <Label fx:id="destinationAddressText" layoutX="149.0" layoutY="95.66666666666667" text="Label" />
+      <Label fx:id="destination2AddressText" layoutX="149.0" layoutY="122.33333333333333" text="Label" visible="false" />
+      <Label fx:id="destination3AddressText" layoutX="149.0" layoutY="149.66666666666666" text="Label" visible="false" />
+      <Label fx:id="destination4AddressText" layoutX="149.0" layoutY="175.0" text="Label" visible="false" />
+      <Button fx:id="printItineraryButton" layoutX="423.0" layoutY="230.0" mnemonicParsing="false" onAction="#printItineraryButtonClicked" text="Print Itinerary" AnchorPane.leftAnchor="423.0" />
+      <Button fx:id="saveButton" layoutX="559.0" layoutY="230.0" mnemonicParsing="false" onAction="#saveButtonClicked" styleClass="submitButton" stylesheets="@plan.css" text="Save Plan" AnchorPane.leftAnchor="559.0" />
+      <Line endX="99.99998474121094" endY="-7.66668701171875" layoutX="434.83334859212243" layoutY="260.0" startX="99.99998474121094" startY="-26.333343505859375" stroke="#515050" AnchorPane.leftAnchor="534.3333333333334" />
+      <Label layoutX="14.0" layoutY="43.0" text="Departure Date:" />
+      <Label fx:id="departureDateText" layoutX="149.0" layoutY="43.0" text="Label" />
+      <Line endX="99.99998474121094" endY="-7.66668701171875" layoutX="550.0" layoutY="260.0" startX="99.99998474121094" startY="-26.333343505859375" stroke="#515050" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="263.0" prefWidth="276.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.roadtripplanner.AddStopController">
+   <children>
+      <Button fx:id="startToDest1" layoutX="76.0" layoutY="48.0" mnemonicParsing="false" onAction="#startToDest1Clicked" text="Start to Destination 1" />
+      <Button fx:id="dest1ToDest2" layoutX="53.0" layoutY="89.0" mnemonicParsing="false" onAction="#dest1ToDest2Clicked" text="Destination 1 to Destination 2" visible="false" />
+      <Button fx:id="dest2ToDest3" layoutX="51.0" layoutY="132.0" mnemonicParsing="false" onAction="#dest2ToDest3Clicked" text="Destination 2 to Destination 3" visible="false" />
+      <Button fx:id="dest3ToDest4" layoutX="51.0" layoutY="171.0" mnemonicParsing="false" onAction="#dest3ToDest4Clicked" text="Destination 3 to Destination 4" visible="false" />
+   </children>
+</AnchorPane>
